@@ -15,58 +15,50 @@ public class Filosofo extends Thread {
       this.number = num;
       this.N = n;
     }
-
+    
     public void run(){
-      System.out.println("Oi! Sou o Filosofo #" + number);
+    System.out.println("Oi! Sou o Filosofo #" + number);
 
-//      while (true) {
-//      switch (state) {    
-//      for(int i = 0; i < garrafas.size(); i++){   
-//        garrafas.get(i).pegar();
-//        System.out.println("Filosofo #" + number + " pega a left Garrafa.");
-//        drink();
-//        garrafas.get(i).soltar();
-//        System.out.println("Filosofo #" + number + " solta a left Garrafa.");
-//        state = 2;
-//       }
-//      }
-//    }
-//   }
+    int qtdgarraf;
+    if(N > 2){  
+    qtdgarraf = ThreadLocalRandom.current().nextInt(2, N);
+    } else { qtdgarraf = 2; }
 
-  int qtdgarraf = ThreadLocalRandom.current().nextInt(2, N);
-    for(int i = 0; i < qtdgarraf; i++){   
-     while(true){
-        switch(state) {
-         case TRANQUILO: 
-            think();
-            garrafas.get(i).pegar();
-            state = COMSEDE; 
-            break;
-          case COMSEDE:
-            // aquire both forks, i.e. only eat if no neighbor is eating
-            // otherwise wait
-            //mutex.release();
-            garrafas.get(i).pegar();
-            state = BEBENDO;
-            break;
-          case BEBENDO:
-            drink();
-            garrafas.get(i).pegar();
-            state = TRANQUILO;
-            // if a hungry neighbor can now eat, nudge the neighbor.
-            //test(left());  
-            //test(right());
-            garrafas.get(i).soltar();
-            break;
-        }     
-      }     
+  //System.out.println("Size: " + garrafas.size());
+    //try{
+      while(true){
+        for(int i = 0; i < qtdgarraf; i++){   
+          switch(state) {
+              case TRANQUILO:
+                  think();
+                  garrafas.get(i).pegar();
+                  state = COMSEDE;
+                  break;
+              case COMSEDE:
+                  //mutex.release();
+                  //garrafas.get(i).soltar();
+                  garrafas.get(i).pegar();
+                  //self.acquire();
+                  state = BEBENDO;
+                  break;
+              case BEBENDO:
+                  drink();
+                  garrafas.get(i).pegar();
+                  state = TRANQUILO;
+                  //test(left());
+                  //test(right());
+                  garrafas.get(i).soltar();
+                  break;
+          }     
+      }
     }
-  } 
+ // } catch(InterruptedException e) {}    
+ } 
       
     void drink() {
       try {
         int sleepTime = 1000;
-        System.out.println("Filosofo #" + " bebeu por " + sleepTime);
+        System.out.println("Filosofo #" + number + " bebeu por " + sleepTime);
         Thread.sleep(sleepTime);
       }
       catch (Exception e) {
@@ -77,7 +69,7 @@ public class Filosofo extends Thread {
     void think() {
       try {
         int sleepTime = ThreadLocalRandom.current().nextInt(0, 2000);
-        System.out.println("Filosofo #" + " bebeu por " + sleepTime);
+        System.out.println("Filosofo #" + number + " pensou por " + sleepTime);
         Thread.sleep(sleepTime);
       }
       catch (Exception e) {
@@ -85,6 +77,15 @@ public class Filosofo extends Thread {
       }
     }
 
+//      static private void test(Filosofo p) {
+//        for(int k = 0; k < Filosofos.lenght; k++){
+//            if(p.garrafas.contains(idk)){
+//              if (Filosofo[k].state != BEBENDO && p.state == COMSEDE) {
+//                  p.state = BEBENDO;
+//            }
+//         }      
+//      }
+    
     public ArrayList<Garrafa> getGarrafas() {
         return garrafas;
     }

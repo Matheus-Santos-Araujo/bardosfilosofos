@@ -3,13 +3,11 @@ package bar.dos.filósofos;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.Scanner;
 
 public class BarDosFilósofos {
 
-  static int numerofilosofos;
+public static int numerofilosofos;
 
   public static void main(String argv[]) throws FileNotFoundException {
 
@@ -45,7 +43,6 @@ File file = new File(fileName);
   scanner.close();
     
   numerofilosofos = N;
-  ArrayList<Garrafa> sublistagarrafas = new ArrayList<>();
   Filosofo Filosofos[] = new Filosofo[numerofilosofos];
 //    System.out.println("Garrafas: " + garrafas.size()); 
 //  System.out.println("Garrafas: " + Filosofos.length); 
@@ -55,17 +52,16 @@ File file = new File(fileName);
 //  }
   
 for(int i = 0; i < numerofilosofos; i++){  
- 
+ ArrayList<Garrafa> sublistagarrafas = new ArrayList<>();
  for(int k = 0; k < garrafas.size(); k++){  
     if(garrafas.get(k).id.contains(Integer.toString(i))){
     sublistagarrafas.add(garrafas.get(k));
     }
  }
 
- System.out.println("Sub: " + sublistagarrafas.size());
+ //System.out.println("Sub: " + sublistagarrafas.size());
  Filosofos[i] = new Filosofo(i, sublistagarrafas.size());
  Filosofos[i].setGarrafas(sublistagarrafas);
- sublistagarrafas.clear();
 }
 
     for (int i = 0; i < numerofilosofos; i++) {  
