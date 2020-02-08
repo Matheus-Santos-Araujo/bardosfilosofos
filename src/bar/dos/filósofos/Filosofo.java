@@ -1,5 +1,7 @@
 package bar.dos.filósofos;
 import java.util.ArrayList;
+import static bar.dos.filósofos.BarDosFilósofos.Filosofos;
+import java.util.concurrent.Semaphore;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Filosofo extends Thread {
@@ -9,48 +11,60 @@ public class Filosofo extends Thread {
     public int state = TRANQUILO;  
     public int number;
     public int N = 0;
+    public int epocas = 0;
     public ArrayList<Garrafa> garrafas = new ArrayList<>();
+    private final Semaphore self;
 
     Filosofo(int num, int n) {
       this.number = num;
+      self = new Semaphore(0);
       this.N = n;
     }
     
     public void run(){
-    System.out.println("Oi! Sou o Filosofo #" + number);
+    //System.out.println("Oi! Sou o Filosofo #" + number);
 
-    int qtdgarraf;
+    int qtdgarraf = 2;
     if(N > 2){  
     qtdgarraf = ThreadLocalRandom.current().nextInt(2, N);
-    } else { qtdgarraf = 2; }
+    }
 
   //System.out.println("Size: " + garrafas.size());
     //try{
       while(true){
-        for(int i = 0; i < qtdgarraf; i++){   
+      //for(int i = 0; i < qtdgarraf; i++){   
+       printState();
+       //int i = 0;
           switch(state) {
               case TRANQUILO:
                   think();
-                  garrafas.get(i).pegar();
+                  for(int i = 0; i < qtdgarraf; i++){  garrafas.get(i).pegar(number); }
                   state = COMSEDE;
                   break;
               case COMSEDE:
-                  //mutex.release();
-                  //garrafas.get(i).soltar();
-                  garrafas.get(i).pegar();
-                  //self.acquire();
+                  test(this);
+                  for(int i = 0; i < qtdgarraf; i++){  garrafas.get(i).soltar(number); }
+                  //garrafas.get(i).pegar(number);          
+//              try {
+//                  self.acquire();
+//              } catch (InterruptedException ex) {
+//                  Logger.getLogger(Filosofo.class.getName()).log(Level.SEVERE, null, ex);
+//              }
                   state = BEBENDO;
                   break;
               case BEBENDO:
+                  for(int i = 0; i < qtdgarraf; i++){  garrafas.get(i).pegar(number); }
                   drink();
-                  garrafas.get(i).pegar();
+                  //System.out.println("O " + number + " chegou aqui");
                   state = TRANQUILO;
-                  //test(left());
-                  //test(right());
-                  garrafas.get(i).soltar();
+                  int vizinhos[] = vizinhos(this);
+                  for(int v = 0; v < vizinhos.length; v++){ test(Filosofos[vizinhos[v]]); }
+                  for(int i = 0; i < qtdgarraf; i++){  garrafas.get(i).soltar(number); }
+                  epocas++;
                   break;
-          }     
+          //}     
       }
+        if(epocas >= 6) { System.out.println("###### O filosofo " + number + " terminou ######"); this.stop(); }    
     }
  // } catch(InterruptedException e) {}    
  } 
@@ -76,15 +90,43 @@ public class Filosofo extends Thread {
         e.printStackTrace(System.out);
       }
     }
+    
+     private void printState() {
+      System.out.println("Filosofo " + number + " esta " + state);
+    }
 
-//      static private void test(Filosofo p) {
-//        for(int k = 0; k < Filosofos.lenght; k++){
-//            if(p.garrafas.contains(idk)){
-//              if (Filosofo[k].state != BEBENDO && p.state == COMSEDE) {
-//                  p.state = BEBENDO;
-//            }
-//         }      
-//      }
+  private void test(Filosofo p) {
+        for(int k = 0; k < Filosofos.length; k++){
+          for(int j = 0; j < garrafas.size(); j++){
+              
+            if(garrafas.get(j).id.contains(String.valueOf(k))){
+              if(number != k){  
+               if (Filosofos[k].state != BEBENDO && p.state == COMSEDE) {
+                  p.state = BEBENDO;
+                  //p.self.release();
+               }
+            }
+           }
+         }      
+       }
+    }
+  int i = 0;
+     int[] vizinhos(Filosofo p) {
+       int vizinhos[] = new int[garrafas.size()]; 
+        for(int k = 0; k < Filosofos.length; k++){
+          for(int j = 0; j < garrafas.size(); j++){              
+            if(garrafas.get(j).id.contains(String.valueOf(k))){
+              if(number != k){
+                  //System.out.println(k + " de " + garrafas.get(j).id + " e vizinho de " + number);
+                  vizinhos[i] = number;
+                  i++;
+            }
+           }
+         }      
+       }
+       i = 0; 
+       return vizinhos; 
+    }  
     
     public ArrayList<Garrafa> getGarrafas() {
         return garrafas;

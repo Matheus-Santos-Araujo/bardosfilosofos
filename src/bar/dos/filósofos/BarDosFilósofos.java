@@ -8,6 +8,7 @@ import java.util.Scanner;
 public class BarDosFilósofos {
 
 public static int numerofilosofos;
+public static Filosofo Filosofos[];
 
   public static void main(String argv[]) throws FileNotFoundException {
 
@@ -15,7 +16,7 @@ String fileName = "/home/matheus_araujo/NetBeansProjects/Bar dos Filósofos/src/
 //System.out.print("Enter filename: ");
 //Scanner scanIn = new Scanner(System.in);
 //String fileName =  scanIn.nextLine();
-File file = new File(fileName);
+File file = new File(fileName); 
 
     Scanner scanner = new Scanner(file);
     int N = scanner.nextInt();
@@ -43,7 +44,8 @@ File file = new File(fileName);
   scanner.close();
     
   numerofilosofos = N;
-  Filosofo Filosofos[] = new Filosofo[numerofilosofos];
+    Filosofos = new Filosofo[numerofilosofos];
+  //Filosofos = new Filosofo[numerofilosofos];
 //    System.out.println("Garrafas: " + garrafas.size()); 
 //  System.out.println("Garrafas: " + Filosofos.length); 
 //  
@@ -71,7 +73,7 @@ for(int i = 0; i < numerofilosofos; i++){
     while (true) {
       try {
         // sleep 1 sec
-        Thread.sleep(1000);
+        //Thread.sleep(1000);
 
         // check for deadlock
         boolean deadlock = true;
@@ -86,6 +88,13 @@ for(int i = 0; i < numerofilosofos; i++){
           System.out.println("Deadlock");
           break;
         }
+        int c = 0;
+         for (int i = 0; i < numerofilosofos; i++) {  
+            if(Filosofos[i].isAlive()){
+              c++;  
+            }
+        }
+         if (c == 0) { break; }
       }
       catch (Exception e) {
         e.printStackTrace(System.out);

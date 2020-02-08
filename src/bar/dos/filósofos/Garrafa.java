@@ -11,8 +11,9 @@ import java.util.concurrent.Semaphore;
         this.id = id;
     }
    
-    void pegar() {
+    void pegar(int n) {
       try {
+        System.out.println("-------> O filosofo " + n + " pegou a garrafa " + id);
         semaforo.acquire();
       }
       catch (Exception e) {
@@ -20,7 +21,8 @@ import java.util.concurrent.Semaphore;
       }
     }
 
-    void soltar() {
+    void soltar(int n) {
+      System.out.println("------->  O filosofo " + n + " soltou a garrafa " + id);
       semaforo.release();
     }
 
