@@ -13,7 +13,7 @@ import java.util.concurrent.Semaphore;
    
     void pegar(int n) {
       try {
-        System.out.println("-------> O filosofo " + n + " pegou a garrafa " + id);
+        System.out.println("-------> Filosofo " + n + " pegou a garrafa " + id);
         semaforo.acquire();
       }
       catch (Exception e) {
@@ -22,7 +22,7 @@ import java.util.concurrent.Semaphore;
     }
 
     void soltar(int n) {
-      System.out.println("------->  O filosofo " + n + " soltou a garrafa " + id);
+      System.out.println("------->  Filosofo " + n + " soltou a garrafa " + id);
       semaforo.release();
     }
 

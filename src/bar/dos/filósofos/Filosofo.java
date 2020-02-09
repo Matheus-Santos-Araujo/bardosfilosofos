@@ -11,6 +11,7 @@ public class Filosofo extends Thread {
     public int state = TRANQUILO;  
     public int number;
     public int N = 0;
+    public int p = 0;
     public int epocas = 0;
     public ArrayList<Garrafa> garrafas = new ArrayList<>();
     private final Semaphore self;
@@ -38,28 +39,31 @@ public class Filosofo extends Thread {
           switch(state) {
               case TRANQUILO:
                   think();
-                  for(int i = 0; i < qtdgarraf; i++){  garrafas.get(i).pegar(number); }
+                  //for(int i = 0; i < qtdgarraf; i++){  garrafas.get(i).pegar(number); }
                   state = COMSEDE;
                   break;
               case COMSEDE:
                   test(this);
-                  for(int i = 0; i < qtdgarraf; i++){  garrafas.get(i).soltar(number); }
+                  for(int i = 0; i < qtdgarraf; i++){ if(garrafas.get(i).taLivre()){ garrafas.get(i).pegar(number); p++;}}
                   //garrafas.get(i).pegar(number);          
 //              try {
 //                  self.acquire();
 //              } catch (InterruptedException ex) {
 //                  Logger.getLogger(Filosofo.class.getName()).log(Level.SEVERE, null, ex);
 //              }
-                  state = BEBENDO;
+                  if (p == qtdgarraf){
+                      System.out.println(p + " e " + qtdgarraf);
+                      state = BEBENDO;
+                  } else { state = COMSEDE; }
                   break;
               case BEBENDO:
-                  for(int i = 0; i < qtdgarraf; i++){  garrafas.get(i).pegar(number); }
+                  p = 0;
+                  //for(int i = 0; i < qtdgarraf; i++){  garrafas.get(i).pegar(number); }
                   drink();
-                  //System.out.println("O " + number + " chegou aqui");
-                  state = TRANQUILO;
-                  int vizinhos[] = vizinhos(this);
-                  for(int v = 0; v < vizinhos.length; v++){ test(Filosofos[vizinhos[v]]); }
+//                  int vizinhos[] = vizinhos(this);
+//                  for(int v = 0; v < vizinhos.length; v++){ test(Filosofos[vizinhos[v]]); }
                   for(int i = 0; i < qtdgarraf; i++){  garrafas.get(i).soltar(number); }
+                  state = TRANQUILO;
                   epocas++;
                   break;
           //}     
@@ -92,8 +96,11 @@ public class Filosofo extends Thread {
     }
     
      private void printState() {
-      System.out.println("Filosofo " + number + " esta " + state);
-    }
+     if(state == 0){    
+      System.out.println("Filosofo " + number + " esta tranquilo");
+     } else if (state == 1) { System.out.println("Filosofo " + number + " com sede"); } 
+     else if (state == 2) { System.out.println("Filosofo " + number + " esta bebendo"); }
+     }
 
   private void test(Filosofo p) {
         for(int k = 0; k < Filosofos.length; k++){

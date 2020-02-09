@@ -56,8 +56,10 @@ File file = new File(fileName);
 for(int i = 0; i < numerofilosofos; i++){  
  ArrayList<Garrafa> sublistagarrafas = new ArrayList<>();
  for(int k = 0; k < garrafas.size(); k++){  
-    if(garrafas.get(k).id.contains(Integer.toString(i))){
+    if(garrafas.get(k).id.contains(Integer.toString(i)) && garrafas.get(k).id.length() < 3){
     sublistagarrafas.add(garrafas.get(k));
+    } else if (garrafas.get(k).id.contains(Integer.toString(i)) && garrafas.get(k).id.length() >= 3 && Integer.toString(i).length() >= 2){
+     sublistagarrafas.add(garrafas.get(k));    
     }
  }
 
@@ -83,11 +85,11 @@ for(int i = 0; i < numerofilosofos; i++){
             break;
           }
         }
-        if (deadlock) {
-          Thread.sleep(1000);
-          System.out.println("Deadlock");
-          break;
-        }
+//        if (deadlock) {
+//          Thread.sleep(1000);
+//          System.out.println("Deadlock");
+//          break;
+//        }
         int c = 0;
          for (int i = 0; i < numerofilosofos; i++) {  
             if(Filosofos[i].isAlive()){
