@@ -12,6 +12,7 @@ public class Filosofo extends Thread {
     public int number;
     public int N = 0;
     public int p = 0;
+    public boolean run = true;
     public int epocas = 0;
     public ArrayList<Garrafa> garrafas = new ArrayList<>();
     private final Semaphore self;
@@ -54,15 +55,16 @@ public class Filosofo extends Thread {
                   if (p == qtdgarraf){
                       System.out.println(p + " e " + qtdgarraf);
                       state = BEBENDO;
-                  } else { state = COMSEDE; }
+                  } else { state = COMSEDE; run = false; dorme(); }
                   break;
               case BEBENDO:
                   p = 0;
                   //for(int i = 0; i < qtdgarraf; i++){  garrafas.get(i).pegar(number); }
                   drink();
-//                  int vizinhos[] = vizinhos(this);
+                  int vizinhos[] = vizinhos(this);
 //                  for(int v = 0; v < vizinhos.length; v++){ test(Filosofos[vizinhos[v]]); }
                   for(int i = 0; i < qtdgarraf; i++){  garrafas.get(i).soltar(number); }
+                  for(int v = 0; v < vizinhos.length; v++){ Filosofos[vizinhos[v]].acorda(); }
                   state = TRANQUILO;
                   epocas++;
                   break;
@@ -123,10 +125,14 @@ public class Filosofo extends Thread {
         for(int k = 0; k < Filosofos.length; k++){
           for(int j = 0; j < garrafas.size(); j++){              
             if(garrafas.get(j).id.contains(String.valueOf(k))){
-              if(number != k){
-                  //System.out.println(k + " de " + garrafas.get(j).id + " e vizinho de " + number);
-                  vizinhos[i] = number;
+              if(number != k && garrafas.get(j).id.length() < 3){
+                  System.out.println(k + " de " + garrafas.get(j).id + " e vizinho de " + number);
+                  vizinhos[i] = k;
                   i++;
+            } else if(number != k && garrafas.get(j).id.length() >= 3 && Integer.toString(k).length() >= 2) {
+                System.out.println(k + " de " + garrafas.get(j).id + " e vizinho de " + number);
+                vizinhos[i] = k;
+                i++;
             }
            }
          }      
@@ -134,6 +140,18 @@ public class Filosofo extends Thread {
        i = 0; 
        return vizinhos; 
     }  
+     
+     protected synchronized void dorme() {
+    while (!run) {
+    try { wait(); }
+    catch (InterruptedException ex) {}
+    }
+}
+     
+     protected synchronized void acorda() {
+        run = true;
+        notifyAll();
+    }
     
     public ArrayList<Garrafa> getGarrafas() {
         return garrafas;
