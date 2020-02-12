@@ -14,6 +14,8 @@ public class Filosofo extends Thread {
     public int p = 0;
     public boolean run = true;
     public int epocas = 0;
+    public long tempomedio = 0;    
+    public int qtddormidas = 0;
     public ArrayList<Garrafa> garrafas = new ArrayList<>();
     private final Semaphore self;
 
@@ -53,9 +55,9 @@ public class Filosofo extends Thread {
 //                  Logger.getLogger(Filosofo.class.getName()).log(Level.SEVERE, null, ex);
 //              }
                   if (p == qtdgarraf){
-                      System.out.println(p + " e " + qtdgarraf);
+                      //System.out.println(p + " e " + qtdgarraf);
                       state = BEBENDO;
-                  } else { state = COMSEDE; run = false; dorme(); }
+                  } else { state = COMSEDE; run = false; qtddormidas++; dorme(); }
                   break;
               case BEBENDO:
                   p = 0;
@@ -70,7 +72,7 @@ public class Filosofo extends Thread {
                   break;
           //}     
       }
-        if(epocas >= 6) { System.out.println("###### O filosofo " + number + " terminou ######"); this.stop(); }    
+        if(epocas >= 6) { System.out.println("###### O filosofo " + number + " terminou ######"); double tm = (double)tempomedio/1_000_000_000.0; System.out.println("Filosofo " + number + " dormiu em media " + tm/qtddormidas + "s"); this.stop(); }
     }
  // } catch(InterruptedException e) {}    
  } 
@@ -126,11 +128,11 @@ public class Filosofo extends Thread {
           for(int j = 0; j < garrafas.size(); j++){              
             if(garrafas.get(j).id.contains(String.valueOf(k))){
               if(number != k && garrafas.get(j).id.length() < 3){
-                  System.out.println(k + " de " + garrafas.get(j).id + " e vizinho de " + number);
+                  //System.out.println(k + " de " + garrafas.get(j).id + " e vizinho de " + number);
                   vizinhos[i] = k;
                   i++;
             } else if(number != k && garrafas.get(j).id.length() >= 3 && Integer.toString(k).length() >= 2) {
-                System.out.println(k + " de " + garrafas.get(j).id + " e vizinho de " + number);
+                //System.out.println(k + " de " + garrafas.get(j).id + " e vizinho de " + number);
                 vizinhos[i] = k;
                 i++;
             }
@@ -143,7 +145,7 @@ public class Filosofo extends Thread {
      
      protected synchronized void dorme() {
     while (!run) {
-    try { wait(); }
+    try { long startTime = System.nanoTime(); wait(); long endTime = System.nanoTime(); tempomedio += endTime - startTime; }
     catch (InterruptedException ex) {}
     }
 }
