@@ -14,7 +14,10 @@ public class Filosofo extends Thread {
     public int p = 0;
     public boolean run = true;
     public int epocas = 0;
-    public long tempomedio = 0;    
+    public long tempomedioespera = 0;  
+    public long tempomediotranquilo = 0;    
+    public long tempomediocomsede = 0;    
+    public long tempomediobebendo = 0;    
     public int qtddormidas = 0;
     public ArrayList<Garrafa> garrafas = new ArrayList<>();
     private final Semaphore self;
@@ -41,11 +44,15 @@ public class Filosofo extends Thread {
        //int i = 0;
           switch(state) {
               case TRANQUILO:
+                  long startTimetran = System.nanoTime();
                   think();
                   //for(int i = 0; i < qtdgarraf; i++){  garrafas.get(i).pegar(number); }
                   state = COMSEDE;
+                  long endTimetran = System.nanoTime();
+                  tempomediotranquilo += endTimetran - startTimetran;
                   break;
               case COMSEDE:
+                  long startTimecom = System.nanoTime();
                   test(this);
                   for(int i = 0; i < qtdgarraf; i++){ if(garrafas.get(i).taLivre()){ garrafas.get(i).pegar(number); p++;}}
                   //garrafas.get(i).pegar(number);          
@@ -58,8 +65,11 @@ public class Filosofo extends Thread {
                       //System.out.println(p + " e " + qtdgarraf);
                       state = BEBENDO;
                   } else { state = COMSEDE; run = false; qtddormidas++; dorme(); }
+                  long endTimecom = System.nanoTime();
+                  tempomediocomsede += endTimecom - startTimecom;
                   break;
               case BEBENDO:
+                  long startTimebeb = System.nanoTime();
                   p = 0;
                   //for(int i = 0; i < qtdgarraf; i++){  garrafas.get(i).pegar(number); }
                   drink();
@@ -69,10 +79,23 @@ public class Filosofo extends Thread {
                   for(int v = 0; v < vizinhos.length; v++){ Filosofos[vizinhos[v]].acorda(); }
                   state = TRANQUILO;
                   epocas++;
+                  long endTimebeb = System.nanoTime();
+                  tempomediobebendo += endTimebeb - startTimebeb;
                   break;
           //}     
       }
-        if(epocas >= 6) { System.out.println("###### O filosofo " + number + " terminou ######"); double tm = (double)tempomedio/1_000_000_000.0; System.out.println("Filosofo " + number + " dormiu em media " + tm/qtddormidas + "s"); this.stop(); }
+        if(epocas >= 6) { 
+            System.out.println("###### O filosofo " + number + " terminou ######"); 
+            double tm = (double)tempomedioespera/1_000_000_000.0; 
+            double tmtran = (double)tempomediotranquilo/1_000_000_000.0; 
+            double tmcom = (double)tempomediocomsede/1_000_000_000.0;
+            double tmbeb = (double)tempomediobebendo/1_000_000_000.0;
+            System.out.println("Filosofo " + number + " dormiu em media " + tm/qtddormidas + "s"); 
+            System.out.println("Filosofo " + number + " ficou tranquilo em media " + tmtran/epocas + "s");
+            System.out.println("Filosofo " + number + " ficou com sede em media " + tmcom/epocas + "s");
+            System.out.println("Filosofo " + number + " bebeu em media " + tmbeb/epocas + "s");
+            this.stop(); 
+        }
     }
  // } catch(InterruptedException e) {}    
  } 
@@ -145,7 +168,7 @@ public class Filosofo extends Thread {
      
      protected synchronized void dorme() {
     while (!run) {
-    try { long startTime = System.nanoTime(); wait(); long endTime = System.nanoTime(); tempomedio += endTime - startTime; }
+    try { long startTime = System.nanoTime(); wait(); long endTime = System.nanoTime(); tempomedioespera += endTime - startTime; }
     catch (InterruptedException ex) {}
     }
 }
