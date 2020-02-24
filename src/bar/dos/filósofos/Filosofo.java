@@ -48,7 +48,6 @@ public class Filosofo extends Thread {
                   for(int i = 0; i < qtdgarraf; i++){ if(garrafas.get(i).taLivre()){ garrafas.get(i).pegar(number); p++;}}
 
                   if (p == qtdgarraf){
-                      //System.out.println(p + " e " + qtdgarraf);
                       state = BEBENDO;
                   } else { state = COMSEDE; run = false; qtddormidas++; dorme(); }
                   long endTimecom = System.nanoTime();
@@ -137,11 +136,9 @@ public class Filosofo extends Thread {
           for(int j = 0; j < garrafas.size(); j++){              
             if(garrafas.get(j).id.contains(String.valueOf(k))){
               if(number != k && garrafas.get(j).id.length() < 3){
-                  //System.out.println(k + " de " + garrafas.get(j).id + " e vizinho de " + number);
                   vizinhos[i] = k;
                   i++;
             } else if(number != k && garrafas.get(j).id.length() >= 3 && Integer.toString(k).length() >= 2) {
-                //System.out.println(k + " de " + garrafas.get(j).id + " e vizinho de " + number);
                 vizinhos[i] = k;
                 i++;
             }

@@ -12,7 +12,7 @@ public static Filosofo Filosofos[];
 
   public static void main(String argv[]) throws FileNotFoundException {
 
-String fileName = "/home/matheus_araujo/NetBeansProjects/Bar dos Filósofos/src/bar/dos/filósofos/grafo3.txt";
+String fileName = "/home/matheus_araujo/NetBeansProjects/Bar dos Filósofos/src/bar/dos/filósofos/grafo1.txt";
 //System.out.print("Enter filename: ");
 //Scanner scanIn = new Scanner(System.in);
 //String fileName =  scanIn.nextLine();
