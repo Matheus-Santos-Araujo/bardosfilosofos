@@ -12,7 +12,7 @@ public static Filosofo Filosofos[];
 
   public static void main(String argv[]) throws FileNotFoundException {
 
-String fileName = "/home/matheus_araujo/NetBeansProjects/Bar dos Filósofos/src/bar/dos/filósofos/grafo1.txt";
+String fileName = "/home/matheus_araujo/NetBeansProjects/Bar dos Filósofos/src/bar/dos/filósofos/grafo3.txt";
 //System.out.print("Enter filename: ");
 //Scanner scanIn = new Scanner(System.in);
 //String fileName =  scanIn.nextLine();
@@ -45,13 +45,6 @@ File file = new File(fileName);
     
   numerofilosofos = N;
     Filosofos = new Filosofo[numerofilosofos];
-  //Filosofos = new Filosofo[numerofilosofos];
-//    System.out.println("Garrafas: " + garrafas.size()); 
-//  System.out.println("Garrafas: " + Filosofos.length); 
-//  
-//  for(int k = 0; k < garrafas.size(); k++){  
-//  System.out.println(garrafas.get(k).id);
-//  }
   
 for(int i = 0; i < numerofilosofos; i++){  
  ArrayList<Garrafa> sublistagarrafas = new ArrayList<>();
@@ -63,7 +56,6 @@ for(int i = 0; i < numerofilosofos; i++){
     }
  }
 
- //System.out.println("Sub: " + sublistagarrafas.size());
  Filosofos[i] = new Filosofo(i, sublistagarrafas.size());
  Filosofos[i].setGarrafas(sublistagarrafas);
 }
@@ -74,22 +66,6 @@ for(int i = 0; i < numerofilosofos; i++){
 
     while (true) {
       try {
-        // sleep 1 sec
-        //Thread.sleep(1000);
-
-        // check for deadlock
-        boolean deadlock = true;
-        for (Garrafa f : garrafas) {
-          if (f.taLivre()) {
-            deadlock = false;
-            break;
-          }
-        }
-//        if (deadlock) {
-//          Thread.sleep(1000);
-//          System.out.println("Deadlock");
-//          break;
-//        }
         int c = 0;
          for (int i = 0; i < numerofilosofos; i++) {  
             if(Filosofos[i].isAlive()){
