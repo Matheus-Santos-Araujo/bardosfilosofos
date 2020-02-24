@@ -120,7 +120,6 @@ public class Filosofo extends Thread {
               if(number != k && garrafas.get(j).id.length() < 3){  
                if (Filosofos[k].state != BEBENDO && p.state == COMSEDE) {
                   p.state = BEBENDO;
-                  //p.self.release();
                }
                 } else if(number != k && garrafas.get(j).id.length() >= 3 && Integer.toString(k).length() >= 2) {
                 p.state = BEBENDO;
