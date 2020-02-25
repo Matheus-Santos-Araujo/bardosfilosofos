@@ -13,7 +13,6 @@ public class Filosofo extends Thread {
     public int p = 0;
     public boolean run = true;
     public int epocas = 0;
-    public long tempomedioespera = 0;  
     public long tempomediotranquilo = 0;    
     public long tempomediocomsede = 0;    
     public long tempomediobebendo = 0;    
@@ -69,11 +68,9 @@ public class Filosofo extends Thread {
       }
         if(epocas >= 6) { 
             System.out.println("###### O filosofo " + number + " terminou ######"); 
-            double tm = (double)tempomedioespera/1_000_000_000.0; 
             double tmtran = (double)tempomediotranquilo/1_000_000_000.0; 
             double tmcom = (double)tempomediocomsede/1_000_000_000.0;
             double tmbeb = (double)tempomediobebendo/1_000_000_000.0;
-            System.out.println("Filosofo " + number + " dormiu em media " + tm/qtddormidas + "s"); 
             System.out.println("Filosofo " + number + " ficou tranquilo em media " + tmtran/epocas + "s");
             System.out.println("Filosofo " + number + " ficou com sede em media " + tmcom/epocas + "s");
             System.out.println("Filosofo " + number + " bebeu em media " + tmbeb/epocas + "s");
@@ -159,7 +156,7 @@ public class Filosofo extends Thread {
      
      protected synchronized void dorme() {
     while (!run) {
-    try { long startTime = System.nanoTime(); wait(); long endTime = System.nanoTime(); tempomedioespera += endTime - startTime; }
+    try { wait();  }
     catch (InterruptedException ex) {}
     }
 }
