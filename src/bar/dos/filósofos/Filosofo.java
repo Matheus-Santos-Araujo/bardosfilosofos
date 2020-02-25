@@ -106,10 +106,19 @@ public class Filosofo extends Thread {
     }
     
      private void printState() {
-     if(state == 0){    
-      System.out.println("Filosofo " + number + " esta tranquilo");
-     } else if (state == 1) { System.out.println("Filosofo " + number + " com sede"); } 
-     else if (state == 2) { System.out.println("Filosofo " + number + " esta bebendo"); }
+        switch (state) {
+            case 0:
+                System.out.println("Filosofo " + number + " esta tranquilo");
+                break;
+            case 1:
+                System.out.println("Filosofo " + number + " com sede");
+                break;
+            case 2:
+                System.out.println("Filosofo " + number + " esta bebendo");
+                break;
+            default:
+                break;
+        }
      }
 
   private void test(Filosofo p) {
