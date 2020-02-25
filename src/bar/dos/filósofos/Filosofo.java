@@ -154,12 +154,12 @@ public class Filosofo extends Thread {
        return vizinhos; 
     }  
      
-     protected synchronized void dorme() {
-    while (!run) {
-    try { wait();  }
-    catch (InterruptedException ex) {}
+    protected synchronized void dorme() {
+     while (!run) {
+     try { wait();  }
+     catch (InterruptedException ex) {}
+     }
     }
-}
      
      protected synchronized void acorda() {
         run = true;
