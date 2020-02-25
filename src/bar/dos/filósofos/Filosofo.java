@@ -48,7 +48,7 @@ public class Filosofo extends Thread {
 
                   if (p == qtdgarraf){
                       state = BEBENDO;
-                  } else { state = COMSEDE; run = false; qtddormidas++; dorme(); }
+                  } else { state = COMSEDE; run = false; dorme(); }
                   long endTimecom = System.nanoTime();
                   tempomediocomsede += endTimecom - startTimecom;
                   break;
