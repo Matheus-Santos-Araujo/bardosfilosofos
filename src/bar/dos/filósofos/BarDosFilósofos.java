@@ -33,7 +33,8 @@ File file = new File(fileName);
         for (int j=0; j < lines.length; j++) {
            if(Integer.parseInt(lines[j]) > 0){ 
                Garrafa g = new Garrafa(String.valueOf(i) + String.valueOf(j));
-           for(Garrafa garr : garrafas) { if(garr.id.contains(String.valueOf(j) + String.valueOf(i))) { b = true; } }
+           for(Garrafa garr : garrafas) { if(garr.id.contains(String.valueOf(j) + String.valueOf(i))) 
+                { b = true; } }
                if (!b){
                garrafas.add(g);
               }
@@ -53,7 +54,8 @@ for(int i = 0; i < numerofilosofos; i++){
  for(int k = 0; k < garrafas.size(); k++){  
     if(garrafas.get(k).id.contains(Integer.toString(i)) && garrafas.get(k).id.length() < 3){
     sublistagarrafas.add(garrafas.get(k));
-    } else if (garrafas.get(k).id.contains(Integer.toString(i)) && garrafas.get(k).id.length() >= 3 && Integer.toString(i).length() >= 2){
+    } else if (garrafas.get(k).id.contains(Integer.toString(i)) && garrafas.get(k).id.length() >= 3 
+            && Integer.toString(i).length() >= 2){
      sublistagarrafas.add(garrafas.get(k));    
     }
  }
