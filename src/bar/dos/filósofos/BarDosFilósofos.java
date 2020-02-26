@@ -11,11 +11,13 @@ public static int numerofilosofos;
 public static Filosofo Filosofos[];
 
   public static void main(String argv[]) throws FileNotFoundException {
+ Scanner sc = new Scanner(System.in);
+ System.out.print("Digite aqui o numero de epocas: ");
+ int maximo = Integer.parseInt(sc.nextLine());
 
-String fileName = "/home/matheus_araujo/NetBeansProjects/Bar dos Filósofos/src/bar/dos/filósofos/grafo1.txt";
-//System.out.print("Enter filename: ");
-//Scanner scanIn = new Scanner(System.in);
-//String fileName =  scanIn.nextLine();
+System.out.print("Digite o caminho do arquivo: ");
+Scanner scanIn = new Scanner(System.in);
+String fileName =  scanIn.nextLine();
 File file = new File(fileName); 
 
     Scanner scanner = new Scanner(file);
@@ -56,7 +58,7 @@ for(int i = 0; i < numerofilosofos; i++){
     }
  }
 
- Filosofos[i] = new Filosofo(i, sublistagarrafas.size());
+ Filosofos[i] = new Filosofo(i, sublistagarrafas.size(), maximo);
  Filosofos[i].setGarrafas(sublistagarrafas);
 }
 

@@ -12,6 +12,7 @@ public class Filosofo extends Thread {
     public int N = 0;
     public int p = 0;
     public boolean run = true;
+    public int maximo = 0;
     public int epocas = 0;
     public long tempomediotranquilo = 0;    
     public long tempomediocomsede = 0;    
@@ -19,9 +20,10 @@ public class Filosofo extends Thread {
     public int qtddormidas = 0;
     public ArrayList<Garrafa> garrafas = new ArrayList<>();
 
-    Filosofo(int num, int n) {
+    Filosofo(int num, int n, int maximo) {
       this.number = num;
       this.N = n;
+      this.maximo = maximo;
     }
     
     public void run(){
@@ -66,7 +68,7 @@ public class Filosofo extends Thread {
                   break;
           //}     
       }
-        if(epocas >= 6) { 
+        if(epocas >= maximo) { 
             System.out.println("###### O filosofo " + number + " terminou ######"); 
             double tmtran = (double)tempomediotranquilo/1_000_000_000.0; 
             double tmcom = (double)tempomediocomsede/1_000_000_000.0;
