@@ -19,6 +19,7 @@ public class Filosofo extends Thread {
     public long tempomediobebendo = 0;    
     public int qtddormidas = 0;
     public ArrayList<Garrafa> garrafas = new ArrayList<>();
+    ArrayList<String> pegues = new ArrayList<>();
 
     Filosofo(int num, int n, int maximo) {
       this.number = num;
@@ -46,8 +47,8 @@ public class Filosofo extends Thread {
               case COMSEDE:
                   long startTimecom = System.nanoTime();
                   test(this);
-                  for(int i = 0; i < qtdgarraf; i++){ if(garrafas.get(i).taLivre()){ garrafas.get(i).pegar(number); p++;}}
-
+                  for(int i = 0; i < garrafas.size(); i++){ if(garrafas.get(i).taLivre() && !(p == qtdgarraf)){ garrafas.get(i).pegar(number); p++; 
+                                                               pegues.add(garrafas.get(i).id);}}
                   if (p == qtdgarraf){
                       state = BEBENDO;
                   } else { state = COMSEDE; run = false; dorme(); }
@@ -59,15 +60,16 @@ public class Filosofo extends Thread {
                   p = 0;
                   drink();
                   int vizinhos[] = vizinhos(this);
-                  for(int i = 0; i < qtdgarraf; i++){  garrafas.get(i).soltar(number); }
+                  for(int i = 0; i < garrafas.size(); i++){ if(pegues.contains(garrafas.get(i).id)){ garrafas.get(i).soltar(number); 
+                                                            pegues.remove(garrafas.get(i).id); }}
                   for(int v = 0; v < vizinhos.length; v++){ Filosofos[vizinhos[v]].acorda(); }
                   state = TRANQUILO;
                   epocas++;
                   long endTimebeb = System.nanoTime();
                   tempomediobebendo += endTimebeb - startTimebeb;
                   break;
-          //}     
-      }
+          }     
+      //}
         if(epocas >= maximo) { 
             System.out.println("###### O filosofo " + number + " terminou ######"); 
             double tmtran = (double)tempomediotranquilo/1_000_000_000.0; 
