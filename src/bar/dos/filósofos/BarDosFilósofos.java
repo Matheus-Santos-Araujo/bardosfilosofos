@@ -52,12 +52,13 @@ File file = new File(fileName);
 for(int i = 0; i < numerofilosofos; i++){  
  ArrayList<Garrafa> sublistagarrafas = new ArrayList<>();
  for(int k = 0; k < garrafas.size(); k++){  
-    if(garrafas.get(k).id.contains(Integer.toString(i)) && garrafas.get(k).id.length() < 3){
-    sublistagarrafas.add(garrafas.get(k));
-    } else if (garrafas.get(k).id.contains(Integer.toString(i)) && garrafas.get(k).id.length() >= 3 
-            && Integer.toString(i).length() >= 2){
-     sublistagarrafas.add(garrafas.get(k));    
+    if(garrafas.get(k).id.contains(Integer.toString(i))){          
+     if(garrafas.get(k).id.length() < 3){
+        sublistagarrafas.add(garrafas.get(k));
+     } else if (Integer.toString(i).length() >= 2 || i != 1 && i != 0){
+        sublistagarrafas.add(garrafas.get(k));    
     }
+   }   
  }
 
  Filosofos[i] = new Filosofo(i, sublistagarrafas.size(), maximo);
