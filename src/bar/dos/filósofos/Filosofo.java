@@ -126,12 +126,12 @@ public class Filosofo extends Thread {
         for(int k = 0; k < Filosofos.length; k++){
           for(int j = 0; j < garrafas.size(); j++){
               
-            if(garrafas.get(j).id.contains(String.valueOf(k))){
-              if(number != k && garrafas.get(j).id.length() < 3){  
+            if(number != k && garrafas.get(j).id.contains(String.valueOf(k))){
+              if(garrafas.get(j).id.length() < 3){  
                if (Filosofos[k].state != BEBENDO && p.state == COMSEDE) {
                   p.state = BEBENDO;
                }
-                } else if(number != k && garrafas.get(j).id.length() >= 3 && Integer.toString(k).length() >= 2) {
+                } else if(Integer.toString(k).length() >= 2 || k != 1 && k != 0) {
                 p.state = BEBENDO;
             }
            }
@@ -143,11 +143,11 @@ public class Filosofo extends Thread {
        int vizinhos[] = new int[garrafas.size()]; 
         for(int k = 0; k < Filosofos.length; k++){
           for(int j = 0; j < garrafas.size(); j++){              
-            if(garrafas.get(j).id.contains(String.valueOf(k))){
-              if(number != k && garrafas.get(j).id.length() < 3){
+            if(number != k && garrafas.get(j).id.contains(String.valueOf(k))){
+              if(garrafas.get(j).id.length() < 3){
                   vizinhos[i] = k;
                   i++;
-            } else if(number != k && garrafas.get(j).id.length() >= 3 && Integer.toString(k).length() >= 2) {
+            } else if(Integer.toString(k).length() >= 2 || k != 1 && k != 0) {
                 vizinhos[i] = k;
                 i++;
             }
